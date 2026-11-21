@@ -10,13 +10,13 @@ SVG_SRC = os.path.join(BRAND_DIR, "arnika_icon.svg")
 
 def copy_if_exists(src, rel_targets):
     if not os.path.isfile(src):
-        print(f"[ARNIKA] Missing source asset: {src}")
+        print(f"[ARNIKA_DESK] Missing source asset: {src}")
         return
     for rel in rel_targets:
         dst = os.path.join(ROOT, rel)
         if os.path.isfile(dst):
             shutil.copy2(src, dst)
-            print(f"[ARNIKA] Replaced icon: {rel}")
+            print(f"[ARNIKA_DESK] Replaced icon: {rel}")
 
 def patch_text(rel_path, replacements):
     path = os.path.join(ROOT, rel_path)
@@ -30,12 +30,11 @@ def patch_text(rel_path, replacements):
     if data != orig:
         with open(path, "w", encoding="utf-8") as f:
             f.write(data)
-        print(f"[ARNIKA] Patched text: {rel_path}")
+        print(f"[ARNIKA_DESK] Patched text: {rel_path}")
 
 def main():
-    print("=== Applying Arnika White-Label Branding ===")
+    print("=== Applying Arnika_Desk White-Label Branding ===")
 
-    # 1. ???????? ???? ????????? ??????? ???????? ???? ????? ? Flutter
     copy_if_exists(ICO_SRC, [
         "res/icon.ico",
         "res/tray-icon.ico",
@@ -57,25 +56,22 @@ def main():
         "flutter/assets/logo.svg",
     ])
 
-    # 2. ????? ?????? ???? ?????? ?????? (Properties ? Task Manager)
     patch_text("flutter/windows/runner/Runner.rc", [
         (r'VALUE "CompanyName",\s*"[^"]*"', 'VALUE "CompanyName", "Arnika Systems"'),
-        (r'VALUE "FileDescription",\s*"[^"]*"', 'VALUE "FileDescription", "Arnika Remote Core"'),
-        (r'VALUE "ProductName",\s*"[^"]*"', 'VALUE "ProductName", "Arnika"'),
-        (r'VALUE "LegalCopyright",\s*"[^"]*"', 'VALUE "LegalCopyright", "Copyright (C) Arnika. All rights reserved."'),
+        (r'VALUE "FileDescription",\s*"[^"]*"', 'VALUE "FileDescription", "Arnika_Desk"'),
+        (r'VALUE "ProductName",\s*"[^"]*"', 'VALUE "ProductName", "Arnika_Desk"'),
+        (r'VALUE "LegalCopyright",\s*"[^"]*"', 'VALUE "LegalCopyright", "Copyright (C) Arnika_Desk. All rights reserved."'),
     ])
 
-    # 3. ????? ????? ????? ???? ? ????? ????? ?? ??????
     patch_text("flutter/windows/runner/main.cpp", [
-        (r'L"RustDesk"', 'L"Arnika"'),
+        (r'L"RustDesk"', 'L"Arnika_Desk"'),
     ])
 
-    # 4. ????? ??? ?????? ???? ???? ????? (???? ??????? ? ????? ?? Arnika ????? ??????)
     patch_text("libs/hbb_common/src/config.rs", [
-        (r'RwLock::new\("RustDesk"\.to_owned\(\)\)', 'RwLock::new("Arnika".to_owned())'),
+        (r'RwLock::new\("RustDesk"\.to_owned\(\)\)', 'RwLock::new("Arnika_Desk".to_owned())'),
     ])
 
-    print("=== Arnika Branding Complete ===")
+    print("=== Arnika_Desk Branding Complete ===")
 
 if __name__ == "__main__":
     main()
